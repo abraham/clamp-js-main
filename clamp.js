@@ -8,15 +8,17 @@
  */
 
 (function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
+  if (typeof exports === 'object') {
+    // CommonJS
+    module.exports = factory(require('clamp'));
+  } else if (typeof define === 'function' && define.amd) {
     // AMD
-    define([], factory);
-  } else if (typeof exports === 'object') {
-    // Node, CommonJS-like
-    module.exports = {clamp: factory()};
+    define(['clamp'], function (clamp) {
+      return (root.returnExportsGlobal = factory(clamp));
+    });
   } else {
-    // Browser globals
-    root.$clamp = factory();
+    // Global Variables
+    root.returnExportsGlobal = factory(root.clamp);
   }
 }(this, function() {
   /**
